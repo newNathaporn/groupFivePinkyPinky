@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -28,28 +27,43 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-public class GUI1 extends JFrame {
+public class Points extends JFrame {
 	private JCheckBox standard = new JCheckBox("Standard");
-	private JTextField quiz = new JTextField(10);
-	private JTextField mid = new JTextField(10);
-	private JTextField fin = new JTextField(10);
+	private ArrayList<JTextField> fieldName = new ArrayList<>();
+	private static ArrayList<String> name = new ArrayList<>();
+	private ArrayList<JTextField> fieldScore = new ArrayList<>();
+	private static ArrayList<Double> score = new ArrayList<>();
+	private int num = 0;
 	private JButton ok = new JButton("OK");
 	private ArrayList<JTextField> grade = new ArrayList<>();
 	private ArrayList<JLabel> gradelabel = new ArrayList<>();
-	private static boolean checkinputscore ;
+	private static boolean checkinputscore;
 	private ArrayList<String> textall = new ArrayList<>();
-	private static GUI g ;
-	public GUI1() {
-		// TODO Auto-generated constructor stub
+	private static Login g;
 
-		grade.add(new JTextField("50-100"));
-		grade.add(new JTextField("40-49"));
-		grade.add(new JTextField("30-39"));
-		grade.add(new JTextField("20-29"));
-		grade.add(new JTextField("10-19"));
-		grade.add(new JTextField("8-9"));
-		grade.add(new JTextField("6-7"));
-		grade.add(new JTextField("0-5"));
+	public Points() {
+		// TODO Auto-generated constructor stub
+		while (true) {
+			try {
+				do {
+					num = Integer.valueOf(JOptionPane.showInputDialog(("Input num of score 3-5")));
+				} while (!(num > 2 && num < 6));
+				break;
+			} catch (NumberFormatException e) {
+				if (e.getMessage().equals("null"))
+					return;
+				JOptionPane.showMessageDialog(null, "Input number");
+			}
+		}
+
+		grade.add(new JTextField(10));
+		grade.add(new JTextField(10));
+		grade.add(new JTextField(10));
+		grade.add(new JTextField(10));
+		grade.add(new JTextField(10));
+		grade.add(new JTextField(10));
+		grade.add(new JTextField(10));
+		grade.add(new JTextField(10));
 
 		Font font = new Font("TimesRoman", Font.BOLD, 30);
 		JPanel p = new JPanel();
@@ -59,11 +73,14 @@ public class GUI1 extends JFrame {
 		JPanel p4 = new JPanel();
 		JPanel pall = new JPanel();
 
-		p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.cyan), "eiei"));
+		// p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.cyan),
+		// "eiei"));
 		p.setLayout(new BorderLayout());
 
 		p2.setLayout(new GridLayout(2, 1));
-		p2.add(new JLabel("ee"));
+		JLabel bel = new JLabel("BenchMark");
+		bel.setFont(new Font("TimesRoman", Font.BOLD, 20));
+		p2.add(bel);
 		p2.add(standard);
 		standard.setFont(new Font("TimesRoman", Font.BOLD, 25));
 
@@ -81,20 +98,19 @@ public class GUI1 extends JFrame {
 					grade.get(5).setText("55-59");
 					grade.get(6).setText("50-54");
 					grade.get(7).setText("0-49");
-					quiz.setText("20");
-					mid.setText("40");
-					fin.setText("40");
+					fieldScore.get(0).setText("40");
+					fieldScore.get(1).setText("40");
 				} else {
 					for (int i = 0; i < grade.size(); i++) {
 						grade.get(i).setText("");
-						quiz.setText("");
-						mid.setText("");
-						fin.setText("");
+					}
+					for (int j = 0; j < num; j++) {
+						fieldScore.get(j).setText("");
 					}
 				}
 			}
 		});
-		p1.setLayout(new GridLayout(12, 2));
+		p1.setLayout(new GridLayout(8 + num, 2));
 
 		String[] gradetext = { "A", "B+", "B", "C+", "C", "D+", "D", "F" };
 		for (int i = 0; i < 8; i++) {
@@ -105,25 +121,26 @@ public class GUI1 extends JFrame {
 		for (int i = 0; i < grade.size(); i++) {
 			p1.add(gradelabel.get(i));
 			p1.add(grade.get(i));
-			if (i == grade.size() - 1) {
-				JLabel quizz = new JLabel("Quiz");
-				JLabel midterm = new JLabel("Midterm");
-				JLabel finall = new JLabel("Final");
-				quizz.setFont(font);
-				midterm.setFont(font);
-				finall.setFont(font);
-				p1.add(quizz);
-				p1.add(quiz);
-				p1.add(midterm);
-				p1.add(mid);
-				p1.add(finall);
-				p1.add(fin);
+		}
+
+		for (int i = 0; i < num; i++) {
+			if (i == 0) {
+				fieldName.add(new JTextField("Midterm"));
+				fieldName.get(i).setEnabled(false);
+			} else if (i == 1) {
+				fieldName.add(new JTextField("Final"));
+				fieldName.get(i).setEnabled(false);
+			} else {
+				fieldName.add(new JTextField(""));
 			}
+			fieldName.get(i).setFont(new Font("TimesRoman", Font.BOLD, 20));
+			fieldScore.add(new JTextField(""));
+			p1.add(fieldName.get(i));
+			p1.add(fieldScore.get(i));
 		}
 
 		p3.add(p1);
 		p4.add(ok);
-
 		p.add(p2, BorderLayout.NORTH);
 		p.add(p3, BorderLayout.CENTER);
 		p.add(p4, BorderLayout.SOUTH);
@@ -136,36 +153,60 @@ public class GUI1 extends JFrame {
 				boolean gread50 = true;
 				try {
 					eiei();
-					if ((Integer.valueOf(mid.getText()) + Integer.valueOf(fin.getText())) >= 50) {
-						if ((Integer.valueOf(mid.getText()) + Integer.valueOf(fin.getText())
-								+ Integer.valueOf(quiz.getText()) == 100))
-							gread50 = false;
+					for (int i = 0; i < num; i++) {
+						if (!fieldName.get(i).getText().equals(""))
+							name.add(fieldName.get(i).getText());
+						if (!fieldScore.get(i).getText().equals(""))
+							score.add(Double.valueOf(fieldScore.get(i).getText()));
+					}
+					int sum = 0;
+					if (score.get(0) + score.get(1) >= 50) {
+						for (int i = 0; i < score.size(); i++) {
+							sum += score.get(i);
+						}
+						if (sum == 100) {
+							gread50 = false;							
+						}else {
+							JOptionPane.showMessageDialog(null, "Score total 100");
+							return;
+						}
 					}
 					if (gread50) {
-						mid.setText("");
-						fin.setText("");
-						quiz.setText("");
+						for (int i = 0; i < fieldScore.size(); i++) {
+							fieldScore.get(i).setText("");
+						}
 						JOptionPane.showMessageDialog(null, "Input mid and fin > 50%");
+						return;
 					}
-					
+
 					try {
-						FileWriter fw = new FileWriter(new File("Datastandard.csv"),true);
+						FileWriter fw = new FileWriter(new File("Datastandard.csv"), true);
 						PrintWriter writer = new PrintWriter(fw);
 						checkinputscore = true;
-						writer.println(g.getSubject()+","+checkinputscore);
+						writer.println(g.getSubject() + "," + checkinputscore);
+						String s = "";
+						for (int j = 0; j < name.size(); j++) {
+							if(!name.get(j).equals(""))
+							if(name.size()-1 == j)
+								s += name.get(j) ;
+							else 
+								s += name.get(j) + ",";
+						}
+						System.out.println(s);
+						writer.println(s);
 						for (int i = 0; i < gradetext.length; i++) {
 							writer.println(grade.get(i).getText());
 						}
-						writer.println(quiz.getText());
-						writer.println(mid.getText());
-						writer.println(fin.getText());
+						for (int j = 0; j < score.size(); j++) {
+							writer.println(fieldScore.get(j).getText());
+						}
 						writer.close();
 						fw.close();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						System.out.println(e1.getMessage());
 					}
-					GUI4 f = new GUI4();
+					TotalscoretermFrame f = new TotalscoretermFrame();
 					f.setVisible(true);
 					setVisible(false);
 				} catch (NumberFormatException e) {
@@ -183,7 +224,7 @@ public class GUI1 extends JFrame {
 			}
 		});
 		add(p);
-		setSize(500, 700);
+		setSize(500, 520 + (num * 40));
 		setLocation(700, 100);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
@@ -253,14 +294,22 @@ public class GUI1 extends JFrame {
 			BufferedReader reader = new BufferedReader(fr);
 			String s = reader.readLine();
 			String texttrue = g.getSubject() + ",TRUE";
-			while(s!=null) {
-				if(s.toUpperCase().equals(texttrue.toUpperCase())) {
+			String textall = "";
+			while (s != null) {
+				if (s.toUpperCase().equals(texttrue.toUpperCase())) {
 					checkinputscore = true;
+				} else if (checkinputscore) {
+					textall = s;
+					break;
 				}
 				s = reader.readLine();
 			}
 			reader.close();
 			fr.close();
+			String[] text = textall.split(",");
+			for (int i = 0; i < text.length; i++) {
+				name.add(text[i]);
+			}
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -270,8 +319,16 @@ public class GUI1 extends JFrame {
 		}
 		return checkinputscore;
 	}
-	
+
+	public static ArrayList<String> stringName() {
+		return name;
+	}
+
+	public static ArrayList<Double> doubleScore() {
+		return score;
+	}
+
 	public static void main(String[] args) {
-		new GUI1();
+		new Points();
 	}
 }
