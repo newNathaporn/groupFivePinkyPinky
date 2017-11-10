@@ -46,7 +46,7 @@ public class Points extends JFrame {
 		while (true) {
 			try {
 				do {
-					num = Integer.valueOf(JOptionPane.showInputDialog(("Input num of score 3-5")));
+					num = Integer.valueOf(JOptionPane.showInputDialog(("Input number of score 3-5")));
 				} while (!(num > 2 && num < 6));
 				break;
 			} catch (NumberFormatException e) {
