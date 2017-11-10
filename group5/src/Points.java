@@ -100,9 +100,13 @@ public class Points extends JFrame {
 					grade.get(7).setText("0-49");
 					fieldScore.get(0).setText("40");
 					fieldScore.get(1).setText("40");
+					for (int i = 0; i < grade.size() ; i++) {
+						grade.get(i).setEnabled(false);
+					}
 				} else {
 					for (int i = 0; i < grade.size(); i++) {
 						grade.get(i).setText("");
+						grade.get(i).setEnabled(true);	
 					}
 					for (int j = 0; j < num; j++) {
 						fieldScore.get(j).setText("");
@@ -148,26 +152,34 @@ public class Points extends JFrame {
 		ok.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) throws NumberFormatException {
+			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				boolean gread50 = true;
+				int sum = 0;
 				try {
-					eiei();
-					for (int i = 0; i < num; i++) {
-						if (!fieldName.get(i).getText().equals(""))
-							name.add(fieldName.get(i).getText());
-						if (!fieldScore.get(i).getText().equals(""))
-							score.add(Double.valueOf(fieldScore.get(i).getText()));
-					}
-					int sum = 0;
-					if (score.get(0) + score.get(1) >= 50) {
-						for (int i = 0; i < score.size(); i++) {
-							sum += score.get(i);
+					grade();
+					if (Double.valueOf(fieldScore.get(0).getText()) + Double.valueOf(fieldScore.get(1).getText()) >= 50) {
+						for (int i = 0; i < num; i++) {
+							sum += Double.valueOf(fieldScore.get(i).getText());
 						}
+						System.out.println(sum);
 						if (sum == 100) {
+							for (int i = 0; i < num; i++) {
+								//if (!fieldName.get(i).getText().equals(""))
+									name.add(fieldName.get(i).getText());
+								//if (!fieldScore.get(i).getText().equals(""))
+									score.add(Double.valueOf(fieldScore.get(i).getText()));
+							}
 							gread50 = false;							
 						}else {
 							JOptionPane.showMessageDialog(null, "Score total 100");
+							for (int i = 0; i < fieldScore.size() ; i++) {
+								fieldScore.get(i).setText("");
+							}
+							for (int i = score.size()-1 ; i >= 0 ; i--) {
+								name.remove(i);
+								score.remove(i);
+							}
 							return;
 						}
 					}
@@ -175,7 +187,7 @@ public class Points extends JFrame {
 						for (int i = 0; i < fieldScore.size(); i++) {
 							fieldScore.get(i).setText("");
 						}
-						JOptionPane.showMessageDialog(null, "Input mid and fin > 50%");
+						JOptionPane.showMessageDialog(null, "Input midterm and final >= 50%");
 						return;
 					}
 
@@ -192,7 +204,6 @@ public class Points extends JFrame {
 							else 
 								s += name.get(j) + ",";
 						}
-						System.out.println(s);
 						writer.println(s);
 						for (int i = 0; i < gradetext.length; i++) {
 							writer.println(grade.get(i).getText());
@@ -217,8 +228,8 @@ public class Points extends JFrame {
 					for (int i = 0; i < grade.size(); i++) {
 						grade.get(i).setText("");
 					}
-					e.printStackTrace();
-					// JOptionPane.showMessageDialog(null, e.getMessage());
+					//e.printStackTrace();
+					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
 
 			}
@@ -230,7 +241,7 @@ public class Points extends JFrame {
 		setVisible(true);
 	}
 
-	public void eiei() throws Exception {
+	public void grade() throws Exception {
 
 		ArrayList<Integer> array = new ArrayList<>();
 		ArrayList<Integer> array1 = new ArrayList<>();
@@ -308,6 +319,7 @@ public class Points extends JFrame {
 			fr.close();
 			String[] text = textall.split(",");
 			for (int i = 0; i < text.length; i++) {
+				if(!text[i].equals(""))
 				name.add(text[i]);
 			}
 		} catch (FileNotFoundException e1) {

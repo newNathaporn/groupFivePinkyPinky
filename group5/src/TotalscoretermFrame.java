@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -29,11 +28,7 @@ public class TotalscoretermFrame extends JFrame{
 		ArrayList<String> name = new ArrayList<>();
 		
 		for (int i = 0; i < point.stringName().size() ; i++) {
-			if(!point.stringName().get(i).equals(""))
-			name.add(point.stringName().get(i));	
-		}
-		for (int i = 0; i < name.size() ; i++) {
-			tab.add(name.get(i),new Totalscoreterm(i));
+			tab.add(point.stringName().get(i),new Totalscoreterm(i));
 		}
 		add(tab);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

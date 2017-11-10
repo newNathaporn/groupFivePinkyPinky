@@ -16,7 +16,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -52,57 +54,28 @@ public class Login extends JFrame {
 		textPassword = new JPasswordField(10);
 		id = new JTextField(10);
 		readfile();
-		id.addKeyListener(new KeyListener() {
-
+		id.addActionListener(new ActionListener() {
+			
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if(!id.getText().equals("") || !textPassword.getText().equals("")) {
-						valueIdandPassword();
-						inputValue();
-					}
+				if(!id.getText().equals("") || !textPassword.getText().equals("")) {
+					valueIdandPassword();
+					inputValue();
 				}
 			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		textPassword.addKeyListener(new KeyListener() {
+			});
+		textPassword.addActionListener(new ActionListener() {
 			
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if(!id.getText().equals("") || !textPassword.getText().equals("")) {
-						valueIdandPassword();
-						inputValue();
-					}
+				if(!id.getText().equals("") || !textPassword.getText().equals("")) {
+					valueIdandPassword();
+					inputValue();
 				}
 			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
-		
 		login = new JButton("Login");
 
 		login.addActionListener(new ActionListener() {
@@ -144,6 +117,7 @@ public class Login extends JFrame {
 	}
 
 	public static String getSubject() {
+		
 		return subject;
 	}
 
@@ -181,8 +155,11 @@ public class Login extends JFrame {
 		
 		boolean username = false ;
 		boolean password = false ;
+		String textname;
 		for (int i = 0; i < user.length; i++) {
-			if (id.getText().equals(user[i][1]))
+			textname = id.getText();
+			String[] text = textname.split(" ");
+			if (text[0].equals(user[i][1]))
 				username = true;
 			if (textPassword.getText().equals(user[i][2]))
 				password = true;
@@ -208,10 +185,12 @@ public class Login extends JFrame {
 				point.setVisible(true);
 			}
 		}else {
-			JOptionPane.showMessageDialog(null, "IN PUT ID & PASSWORD AGAIN");
+			JOptionPane.showMessageDialog(null, "INPUT ID & PASSWORD AGAIN");
 			id.setText("");
 			textPassword.setText("");
 		}
 		return value;
 	}
+	
+	
 }

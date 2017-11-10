@@ -28,14 +28,13 @@ import javax.swing.plaf.synth.SynthSpinnerUI;
 import javax.swing.table.DefaultTableModel;
 
 public class Totalscoreterm extends JPanel {
-	private JTextField totalStudents;
 	private JTextField studentsabsent;
 	private JButton save;
+	private JButton result;
 	private DefaultTableModel tableModel;
 	private Login login;
 	private Points point;
 	private ArrayList<String> textsum = new ArrayList<>();
-	private String[][] textscore;
 	private String[][] textall;
 	private int scoreterm;
 	private int file;
@@ -47,43 +46,55 @@ public class Totalscoreterm extends JPanel {
 		JPanel p1 = new JPanel();
 		JPanel p2 = new JPanel();
 		JPanel pall = new JPanel();
-		totalStudents = new JTextField(7);
 		studentsabsent = new JTextField(7);
-		p.setLayout(new GridLayout(4, 2, 20, 5));
+		
+		p.setLayout(new GridLayout(3, 2, 20, 5));
 		p.add(new JLabel(""));
 		p.add(new JLabel(""));
-		p.add(new JLabel("Total number of students"));
-		p.add(totalStudents);
 		p.add(new JLabel("Number of student absent"));
 		p.add(studentsabsent);
+		p.add(new JLabel(""));
+		
 		save = new JButton("SAVE");
+		result = new JButton("RESULT");
 		tableModel = new DefaultTableModel();
 		tableModel.addColumn("Code");
 		tableModel.addColumn("Score");
+		
 		JTable table = new JTable(tableModel);
 		JScrollPane tableScroll = new JScrollPane(table);
 		tableScroll.setPreferredSize(new Dimension(300, 500));
-		sizeStudent();
-
-		String textstr[][] = new String[textall.length][];
-		int nullscore = 0;
-		ArrayList<Integer> score = new ArrayList<>();
-		ArrayList<Integer> num = new ArrayList<>();
+		//textall = new String[sizeStudent().length][3+point.stringName().size()];
+		textall = sizeStudent();
+		
+		if(scoreterm == 1) {
+			if(!value()) 
+				save.setEnabled(false);
+		}
+		
 		String text[] = new String[2];
+		
 		for (int i = 0; i < textall.length; i++) {
 			text[0] = textall[i][0];
 			text[1] = textall[i][3 + scoreterm];
 			tableModel.addRow(text);
 		}
-
+		result.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(value()) 
+					save.setEnabled(true);
+				}
+		});
 		save.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				int num = 0;
-				String text = "";
-				
+				String text = "";				
 				num = 3 + scoreterm;
 				for (int i = 0; i < textall.length; i++) {
 					text = tableModel.getValueAt(i, 1).toString();
@@ -101,21 +112,21 @@ public class Totalscoreterm extends JPanel {
 					t[i] = text1;
 					text1 = "";
 				}
-				boolean value = false;
 				
+				boolean value = false;
 				try {
 					FileWriter fw = new FileWriter(new File("Datascore.csv"));
 					PrintWriter writer = new PrintWriter(fw);
 					for (int i = 0; i < textsum.size(); i++) {
 						if (i == file) {
-					writer.println(login.getSubject());
+							writer.println(login.getSubject());
 							value = true;
 						} else if (value) {
 							for (int j = 0; j < t.length; j++) {
 								writer.println(t[j]);
 							}
 							value = false;
-							i += t.length;
+							i += t.length-1;
 						} else if (value == false) {
 							writer.println(textsum.get(i));
 						}
@@ -125,8 +136,9 @@ public class Totalscoreterm extends JPanel {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}				
 			}
+			
 		});
 
 		tableModel.addTableModelListener(new TableModelListener() {
@@ -135,6 +147,7 @@ public class Totalscoreterm extends JPanel {
 			public void tableChanged(TableModelEvent e) {
 
 				// TODO Auto-generated method stub
+				//sizeStudent();
 				int data = 0;
 				int row = 0;
 				int column = 0;
@@ -147,7 +160,6 @@ public class Totalscoreterm extends JPanel {
 
 					try {
 						data = Integer.valueOf(dataUpdated);
-						//exception(data);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						tableModel.setValueAt(0, row, column);
@@ -155,6 +167,7 @@ public class Totalscoreterm extends JPanel {
 						return;
 					}
 				}
+				
 			}
 		});
 
@@ -162,11 +175,14 @@ public class Totalscoreterm extends JPanel {
 		pall.add(p, BorderLayout.NORTH);
 		pall.add(tableScroll, BorderLayout.CENTER);
 		p2.add(save);
+		if(scoreterm == 1) {
+			p2.add(result);
+		}
 		pall.add(p2, BorderLayout.SOUTH);
 		add(pall, BorderLayout.CENTER);
 	}
 
-	public void sizeStudent() {
+	public String[][] sizeStudent() {
 
 		ArrayList<String> id = new ArrayList<>();
 		boolean value = false;
@@ -191,9 +207,9 @@ public class Totalscoreterm extends JPanel {
 				s = reader.readLine();
 				count5++;
 			}
-
 			reader.close();
 			fr.close();
+			
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -201,7 +217,7 @@ public class Totalscoreterm extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		textall = new String[id.size()][3+point.stringName().size()];
+		String textall1[][] = new String[id.size()][3+point.stringName().size()];
 		String textsum[] = new String[3+point.stringName().size()];
 		for (int i = 0; i < id.size(); i++) {
 			String text[] = id.get(i).split(",");
@@ -215,31 +231,54 @@ public class Totalscoreterm extends JPanel {
 				textsum[j] = textt;
 			}
 			for (int j = 0; j < 3+point.stringName().size() ; j++) {
-				textall[i][j] = textsum[j];
+				textall1[i][j] = textsum[j];
 			}
 		}
+		/*for (int i = 0; i < textall.length; i++) {
+			for (int j = 0; j < textall[i].length; j++) {
+				System.out.println(textall[i][j]);
+			}
+		}*/
+		return textall1;
 	}
-
-	/*public void exception(int num) throws Exception {
-		ArrayList<Integer> scoreStandard = new ArrayList<>();
-		boolean value = false;
-		try {
-			FileReader fr = new FileReader(new File("Datastandard.csv"));
-			BufferedReader reader = new BufferedReader(fr);
+	
+	public boolean value() {
+		point.getcheck();
+		
+		int index = 0;
+		boolean value = false ;
+		try (FileReader fr = new FileReader((new File("Datascore.csv")));
+				BufferedReader reader = new BufferedReader(fr);){
 			String s = reader.readLine();
-			while (s != null) {
+			String[] ss = new String[point.stringName().size() + 3]; 
+			//System.out.println(ss.length);
+			while(s != null){
 				String[] text = s.split(",");
-				if (text[0].equals(login.getSubject()))
-					value = true;
-				else if (scoreStandard.size() == 3)
-					break;
-				else if (value && s.length() <= 3)
-					scoreStandard.add(Integer.valueOf(s));
+				if(text[0].equals(login.getSubject())) {
+					value = true;	
+				}else if (text[0].length() < 6 && !text[0].equals(login.getSubject()) && value) {
+					value = false;
+				}
+				else if(value) {
+					String[] texta = s.split(",");
+					for (int i = 0; i < point.stringName().size() + 3; i++) {
+						for (int j = 0; j < point.stringName().size() + 3 ; j++) {
+							if(j >= texta.length) 
+								ss[j] = "" ;
+							else
+								ss[j] = texta[j];
+						}
+						if(ss[i].equals("") && i!=4) {
+							index++;
+						}
+					}
+				}
 				s = reader.readLine();
 			}
-			reader.close();
-			fr.close();
-
+			//System.out.println(index);
+			if(index == 0) {
+				value = true;
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -247,10 +286,6 @@ public class Totalscoreterm extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int sum = 0;
-		sum = scoreStandard.get(scoreterm);
-
-		if (num > sum)
-			throw new Exception("Input over standard");
-	}*/
+		return value;
+	}
 }
