@@ -65,7 +65,7 @@ public class Totalscoreterm extends JPanel {
 		JScrollPane tableScroll = new JScrollPane(table);
 		tableScroll.setPreferredSize(new Dimension(300, 500));
 		//textall = new String[sizeStudent().length][3+point.stringName().size()];
-		textall = sizeStudent();
+		sizeStudent();
 		
 		if(scoreterm == 1) {
 			if(!value()) 
@@ -93,12 +93,21 @@ public class Totalscoreterm extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				
 				int num = 0;
-				String text = "";				
+				sizeStudent();
+				String text = "";		
+		
 				num = 3 + scoreterm;
 				for (int i = 0; i < textall.length; i++) {
 					text = tableModel.getValueAt(i, 1).toString();
 					textall[i][num] = text;
+				}
+				for (int i = 0; i < textall.length; i++) {
+					for (int j = 0; j < textall[i].length; j++) {
+						System.out.print(textall[i][j]);
+					}
+					System.out.println();
 				}
 				String text1 = "";
 				String[] t = new String[textall.length];
@@ -136,7 +145,7 @@ public class Totalscoreterm extends JPanel {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}				
+				}		
 			}
 			
 		});
@@ -182,9 +191,10 @@ public class Totalscoreterm extends JPanel {
 		add(pall, BorderLayout.CENTER);
 	}
 
-	public String[][] sizeStudent() {
-
+	public void sizeStudent() {
+		
 		ArrayList<String> id = new ArrayList<>();
+		textsum.clear();
 		boolean value = false;
 		int count = 0;
 		int count5 = 0;
@@ -217,7 +227,8 @@ public class Totalscoreterm extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		String textall1[][] = new String[id.size()][3+point.stringName().size()];
+		textall = null;
+		textall = new String[id.size()][3+point.stringName().size()];
 		String textsum[] = new String[3+point.stringName().size()];
 		for (int i = 0; i < id.size(); i++) {
 			String text[] = id.get(i).split(",");
@@ -231,15 +242,10 @@ public class Totalscoreterm extends JPanel {
 				textsum[j] = textt;
 			}
 			for (int j = 0; j < 3+point.stringName().size() ; j++) {
-				textall1[i][j] = textsum[j];
+				textall[i][j] = textsum[j];
 			}
 		}
-		/*for (int i = 0; i < textall.length; i++) {
-			for (int j = 0; j < textall[i].length; j++) {
-				System.out.println(textall[i][j]);
-			}
-		}*/
-		return textall1;
+		
 	}
 	
 	public boolean value() {

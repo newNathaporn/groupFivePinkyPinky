@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /Login$1.class
 /Login$2.class
 /Login$3.class
@@ -8,8 +6,8 @@
 /Points$1.class
 /Points$2.class
 /Points.class
->>>>>>> branch 'master' of https://github.com/newNathaporn/groupFivePinkyPinky.git
 /Totalscoreterm$1.class
 /Totalscoreterm$2.class
 /Totalscoreterm$3.class
-/LoginTest.class
+/Totalscoreterm.class
+/TotalscoretermFrame.class
