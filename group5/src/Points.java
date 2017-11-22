@@ -155,14 +155,31 @@ public class Points extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				boolean gread50 = true;
+				ArrayList<String> ss = new ArrayList<>();
+				int sumss = 0;
 				int sum = 0;
 				try {
 					grade();
 					if (Double.valueOf(fieldScore.get(0).getText()) + Double.valueOf(fieldScore.get(1).getText()) >= 50) {
 						for (int i = 0; i < num; i++) {
 							sum += Double.valueOf(fieldScore.get(i).getText());
+							ss.add(fieldName.get(i).getText());
 						}
-						System.out.println(sum);
+						
+						for (int i = 0; i < num ; i++) {
+							for (int j = 0; j < num; j++) {
+								if(ss.get(i).toLowerCase().equals(ss.get(j).toLowerCase()) && i != j) {
+									sumss++;
+								}
+							}
+						}
+						if(sumss >= 2) {
+							JOptionPane.showMessageDialog(null, "ชื่อคะแนนของท่านซ้ำกันครับ/ค่ะ");
+							for (int i = 2; i < num ; i++) {
+								fieldName.get(i).setText("");
+							}
+							return ;
+						}
 						if (sum == 100) {
 							for (int i = 0; i < num; i++) {
 								//if (!fieldName.get(i).getText().equals(""))
