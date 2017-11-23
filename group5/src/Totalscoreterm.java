@@ -139,12 +139,6 @@ public class Totalscoreterm extends JPanel {
 					text1 = "";
 				}
 				
-				/*for (int i = 0; i < textall.length; i++) {
-					for (int j = 0; j < textall[i].length; j++) {
-						System.out.print(textall[i][j] + " ");
-					}
-					System.out.println();
-				}*/
 				boolean valuee = false;
 				try {
 					FileWriter fw = new FileWriter(new File("Datascore.csv"));
@@ -224,8 +218,17 @@ public class Totalscoreterm extends JPanel {
 		boolean value = false;
 		int count = 0;
 		int count5 = 0;
+		File f = new File("Datascore.csv");
+		if(!f.exists()) {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		try {
-			FileReader fr = new FileReader(new File("Datascore.csv"));
+			FileReader fr = new FileReader(f);
 			BufferedReader reader = new BufferedReader(fr);
 			String s = reader.readLine();
 			while (s != null) {

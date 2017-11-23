@@ -42,7 +42,8 @@ public class Login extends JFrame {
 	private String[][] user;
 	private Points point;
 	private TotalscoretermFrame f4;
-
+	private static String valuename = "";
+	
 	public Login() {
 		// TODO Auto-generated constructor stub
 		JPanel p = new JPanel();
@@ -52,7 +53,7 @@ public class Login extends JFrame {
 		JPanel pall = new JPanel();
 
 		textPassword = new JPasswordField(10);
-		id = new JTextField(10);
+		id = new JTextField(10);		
 		readfile();
 		id.addActionListener(new ActionListener() {
 			
@@ -61,6 +62,7 @@ public class Login extends JFrame {
 				// TODO Auto-generated method stub
 				if(!id.getText().equals("") || !textPassword.getText().equals("")) {
 					valueIdandPassword();
+					readTextFile();
 					inputValue();
 				}
 			}
@@ -72,6 +74,7 @@ public class Login extends JFrame {
 				// TODO Auto-generated method stub
 				if(!id.getText().equals("") || !textPassword.getText().equals("")) {
 					valueIdandPassword();
+					readTextFile();
 					inputValue();
 				}
 			}
@@ -84,8 +87,10 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				valueIdandPassword();
+				readTextFile();
 				inputValue();
 			}
+			
 		});
 		cancel = new JButton("Cancel");
 		cancel.addActionListener(new ActionListener() {
@@ -119,10 +124,6 @@ public class Login extends JFrame {
 	public static String getSubject() {
 		
 		return subject;
-	}
-
-	public static void main(String[] args) {
-		new Login();
 	}
 
 	public void readfile() {
@@ -192,5 +193,56 @@ public class Login extends JFrame {
 		return value;
 	}
 	
+	public void readTextFile() {
+		ArrayList<String> t = new ArrayList<>();
+		try {
+			FileReader fr = new FileReader(new File("classlist.csv"));
+			BufferedReader reader = new BufferedReader(fr);
+			String s = reader.readLine();
+			String ts = "";
+			while (s != null) {
+				String ss[] = s.split(",");
+				if(ss.length!=0 && ss.length < 6) {
+					String[] sss = ss[2].split(" ");
+					for (int i = 0; i < sss.length; i++) {
+						ts += sss[i] + ",";					
+					}
+					t.add(ss[1] + "," + ts);
+					ts = "";
+				}
+				s = reader.readLine();
+			}
+			reader.close();
+			fr.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			FileWriter fw = new FileWriter(new File("Datascore.csv"));
+			PrintWriter writer = new PrintWriter(fw);
+				writer.println(getSubject());			
+			for (int i = 0; i < t.size(); i++) {
+				writer.println(t.get(i));
+			}
+			fw.close();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
+	public static String getValueName() {
+		return valuename;
+	}
+	
+	public static void main(String[] args) {
+		new Login();
+	}
 }

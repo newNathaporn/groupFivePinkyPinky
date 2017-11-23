@@ -73,8 +73,6 @@ public class Points extends JFrame {
 		JPanel p4 = new JPanel();
 		JPanel pall = new JPanel();
 
-		// p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.cyan),
-		// "eiei"));
 		p.setLayout(new BorderLayout());
 
 		p2.setLayout(new GridLayout(2, 1));
@@ -317,8 +315,17 @@ public class Points extends JFrame {
 
 	public static boolean getcheck() {
 		FileReader fr;
+		File file = new File("Datastandard.csv");
+		if(!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		try {
-			fr = new FileReader(new File("Datastandard.csv"));
+			fr = new FileReader(file);
 			BufferedReader reader = new BufferedReader(fr);
 			String s = reader.readLine();
 			String texttrue = g.getSubject() + ",TRUE";

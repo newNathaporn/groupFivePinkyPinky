@@ -25,18 +25,19 @@ public class TotalscoretermFrame extends JFrame{
 		// TODO Auto-generated constructor stub
 			
 		JTabbedPane tab = new JTabbedPane(JTabbedPane.TOP);
-		ArrayList<String> name = new ArrayList<>();
 		
-		for (int i = 0; i < point.stringName().size() ; i++) {
+		for (int i = 0; i <point.stringName().size(); i++) {
+			System.out.println(point.stringName().get(i));
+		}
+		
+		for (int i = 0; i < point.stringName().size()/2 ; i++) {
 			tab.add(point.stringName().get(i),new Totalscoreterm(i));
+			System.out.println(i);
 		}
 		add(tab);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(600, 750);
 		setVisible(true);
 		
-	}
-	public static void main(String[] args) {
-		new TotalscoretermFrame();
 	}
 }
