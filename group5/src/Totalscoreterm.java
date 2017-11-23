@@ -68,8 +68,10 @@ public class Totalscoreterm extends JPanel {
 		textall = sizeStudent();
 		
 		if(scoreterm == 1) {
-			if(!value()) 
-				save.setEnabled(false);
+			if(!value()) {
+				
+			}
+				//save.setEnabled(false);
 		}
 		
 		String text[] = new String[2];
@@ -169,6 +171,7 @@ public class Totalscoreterm extends JPanel {
 				}
 				cal.calculate(login.getSubject(), scoreterm, t);
 				cal.writeFile();
+				cal.gradeFile();
 			}
 		});
 

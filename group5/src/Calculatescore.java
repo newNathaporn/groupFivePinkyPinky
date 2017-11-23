@@ -18,6 +18,7 @@ public class Calculatescore {
 	private static String ss = "";
 	private static String[] texts;
 	private static String filestring;
+	
 	public static Double[] calculate(String stringfile, int index , String[] textall){
 		
 		filestring = stringfile;
@@ -66,8 +67,13 @@ public class Calculatescore {
 		score = new Double[textall.length];
 		for (int i = 0; i < textall.length ; i++) {
 			String[] ss = textall[i].split(",");
-			score[i] = (Double.parseDouble(ss[index+3])*standrad.get(index))/100;
+			for (int j = 0; j < ss.length; j++) {
+				if(j > 2) {
+					score[i] = (Double.parseDouble(ss[index+3])*standrad.get(index))/100;					
+				}
+			}
 		}
+		
 		return score;
 	}
 
@@ -107,13 +113,67 @@ public class Calculatescore {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		String[][] text = new String[text1.size()][];
+		double scoresum = 0.0;
+		Double[] score = new Double[text1.size()];
+		String[] arrgrade = new String[text1.size()];
 		for (int i = 0; i < text1.size() ; i++) {
 			String[] ss = text1.get(i).split (",");
-			text[i] = new String[ss.length];
 			for (int j = 0; j < ss.length; j++) {
-				//text[i][j] 
+				if(j > 2 &&  j % 2 == 0) {
+					scoresum += Double.parseDouble(ss[j]);					
+				}else if(j == 0){
+					arrgrade[i] = ss[j];
+				}
 			}
+			score[i] =  scoresum;
+			scoresum = 0;
+		}
+		ArrayList<String> num = new ArrayList<>();
+		try {
+			fr = new FileReader(new File("Datastandard.csv"));
+			BufferedReader reader = new BufferedReader(fr);
+			String s = reader.readLine();
+			while (s != null) {
+				if(s.equals(login.getSubject()+",true")) {
+					value = true;
+				}else if(s.length() < 3) {
+					value = false;
+				}else if(value && s.length() < 9) {
+					num.add(s);
+				}
+				s = reader.readLine();
+			}
+			reader.close();
+			fr.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String[] grade = {"A","B+","B","C+","C","D+","D","F"};
+	
+		for (int i = 0; i < score.length; i++) {
+			for (int j = 0; j < num.size() ; j++) {
+				String[] ss = num.get(j).split("-");
+				if(Integer.parseInt(ss[1])>=score[i] && score[i]>=Integer.parseInt(ss[0])) {
+					arrgrade[i] += "," + grade[j]; 
+				}
+			}
+		}
+		try {
+			FileWriter fw = new FileWriter(new File("Grade"+ filestring +".csv"));
+			PrintWriter writer = new PrintWriter(fw);
+			for (int i = 0; i < arrgrade.length; i++) {
+				writer.println(arrgrade[i]);
+			}
+			fw.close();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
@@ -148,59 +208,42 @@ public class Calculatescore {
 				text.add(texts[i]);										
 			}
 		}
-		
-		/*for (int i = 0; i < texts.length; i++) {
-			System.out.println(texts[i]);
-		}*/
-
-		String[] arrstr2 = new String[texts.length];
-		for (int i = 0; i < texts.length ; i++) {
-			String[] ss = text.get(i).split(",");
-			for (int j = 0; j < ss.length; j++) {
-				if(j > 2) {
-					arrstr2[i] += ss[j] + ",,";					
-				}else {
-					arrstr2[i] += ss[j] + ",";
-				}
-			}
-			System.out.println(arrstr2[i]);
+			
+		String textss = login.getSubject()+",IdName,,";
+		for (int i = 0; i < points.stringName().size() ; i++) {
+			textss += points.stringName().get(i) + ",,";
 		}
-
 		
-		
-		/*String[][] arrstr = new String[text.size()][];
-		String ars = "";
+		String[][] arrstr = new String[text.size()][];
 		for (int i = 0; i < text.size(); i++) {
 			String[] ss = text.get(i).split(",");
 			String[] sss = texts[i].split(",");
-			arrstr[i] = new String[ss.length];
-			for (int j = 0; j < ss.length; j++) {
-				if(count+3 == j) {
-					arrstr[i][j] = sss[j] + "," + score[i] +","; 
-				}else if(count+4 == j){
-					arrstr[i][j] = "";	
-				}else if(j>2){
-					arrstr[i][j] = ss[j] + ",,";						
+			arrstr[i] = new String[points.stringName().size()+points.stringName().size()+3];
+			for (int j = 0; j < arrstr[i].length ; j++) {
+				if(count+count+4 == j) {
+					arrstr[i][j] = score[i] + ","; 
+				}else if(count+count+3 == j){
+					arrstr[i][j] = sss[j-count] + ",";	
+				}else if(ss.length-1 < j){
+					arrstr[i][j] =  ",";	
 				}else {
 					arrstr[i][j] = ss[j] + ",";	
 				}
-			}
+			}	
 		}
 		
 		String arrst = "";
 		String[] arrstr1 = new String[arrstr.length];
+		
 		for (int i = 0; i < arrstr.length ; i++) {
 			for (int j = 0; j < arrstr[i].length; j++) {
-				arrst += arrstr[i][j];
+				arrst += arrstr[i][j] ;
 			}
 			arrstr1[i] = arrst;
 			arrst = "";
 		}
 		
-		String textss = login.getSubject()+",IdName,,";
-		for (int i = 0; i < points.stringName().size() ; i++) {
-			textss += points.stringName().get(i) + ",,";
-		}
+		
 		try {
 			FileWriter fw = new FileWriter(new File(ss));
 			PrintWriter writer = new PrintWriter(fw);
@@ -213,7 +256,7 @@ public class Calculatescore {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 	}
 	
 }
