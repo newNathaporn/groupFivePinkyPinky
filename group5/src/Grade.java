@@ -72,7 +72,6 @@ public class Grade extends JFrame{
 			}
 		});
 		
-		
 		setSize(300, 300);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

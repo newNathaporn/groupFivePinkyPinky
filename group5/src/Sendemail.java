@@ -22,9 +22,9 @@ public class Sendemail {
 	private String textTest = "";
 	public Sendemail(String text,String email,String subject) {
 		// TODO Auto-generated constructor stub
-			textTest = text;
-			
-	       	final String username = "cs284.ttest@gmail.com";
+
+	     	textTest = text;
+			final String username = "cs284.ttest@gmail.com";
 	        final String password = "cs284123";
 
 	        Properties props = new Properties();
@@ -102,9 +102,10 @@ public class Sendemail {
 	        }
 	}
 	
-	public String getTexttest() {
+	public String getTextTest() {
 		return textTest;
 	}
+
 	
 
 }
