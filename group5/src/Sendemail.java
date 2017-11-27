@@ -19,9 +19,11 @@ import javax.mail.internet.MimeMultipart;
 
 
 public class Sendemail {
+	private String textTest = "";
 	public Sendemail(String text,String email,String subject) {
 		// TODO Auto-generated constructor stub
-	       final String username = "cs284.ttest@gmail.com";
+	     	textTest = text;
+			final String username = "cs284.ttest@gmail.com";
 	        final String password = "cs284123";
 
 	        Properties props = new Properties();
@@ -98,6 +100,12 @@ public class Sendemail {
 	            throw new RuntimeException(e);
 	        }
 	}
+	
+	
+	public String getTextTest() {
+		return textTest;
+	}
+
 	public static void main(String[] args) {
 		Sendemail s = new Sendemail("CS284  INTRODUCTION TO SOFTWARE ENGINEERING       Grade :   A","new_ziizyy@hotmail.co.th", "cs284");
 	}
