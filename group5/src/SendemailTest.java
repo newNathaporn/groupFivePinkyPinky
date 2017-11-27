@@ -1,14 +1,12 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import junit.framework.Assert;
 
 public class SendemailTest {
 
 	@Test
 	public void test() {
-		//fail("Not yet implemented");
+
 		Sendemail sendEmail = new Sendemail
 				("testEmail","new_ziizyy@hotmail.co.th","Cs284");
 		

@@ -41,7 +41,7 @@ public class Totalscoreterm extends JPanel {
 	private int scoreterm;
 	private int file;
 	private int count = 0;
-	private static int count5 = 0;
+	private static int counteiei = 0;
 	private Calculatescore cal ;
 	private Totalscoreterm totalscoreterm ;
 	public Totalscoreterm(int scoreterm) {
@@ -251,8 +251,10 @@ public class Totalscoreterm extends JPanel {
 			}
 		}
 		try {
+		
 			FileReader fr = new FileReader(f);
 			BufferedReader reader = new BufferedReader(fr);
+			int count5 = 0;
 			String s = reader.readLine();
 			while (s != null) {
 				textsum.add(s);
@@ -269,6 +271,7 @@ public class Totalscoreterm extends JPanel {
 				s = reader.readLine();
 				count5++;
 			}
+			counteiei = count5;
 			reader.close();
 			fr.close();
 		} catch (FileNotFoundException e1) {
@@ -345,8 +348,8 @@ public class Totalscoreterm extends JPanel {
 		return valuee;
 	}
 	
-	public static int getCount5() {
-		return count5;
+	public static int getCounteiei() {
+		return counteiei;
 	}
 	
 	public static boolean getResult() {

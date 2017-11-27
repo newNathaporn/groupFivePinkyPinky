@@ -54,8 +54,9 @@ public class Grade extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Sendemail s = new Sendemail(textmail[0]);				
-				for (int i = 0; i < total.getCount5()-1 ; i++) {
+				Sendemail s = new Sendemail(textmail[0]);		
+				
+				for (int i = 0; i < total.getCounteiei() ; i++) {
 					if(count == 5) count = 0;
 					Sendemail ss = new Sendemail(text.get(i),textmail[count],login.getSubject());
 					count++;
