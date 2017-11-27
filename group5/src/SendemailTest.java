@@ -13,7 +13,7 @@ public class SendemailTest {
 				("testEmail","new_ziizyy@hotmail.co.th","Cs284");
 		
 		boolean email = false;
-		if(sendEmail.getTextTest().equals("testEmail#")){
+		if(sendEmail.getTextTest().equals("testEmail")){
 			email = true;
 		}
 		assertTrue(email);
