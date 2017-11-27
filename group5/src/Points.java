@@ -172,7 +172,7 @@ public class Points extends JFrame {
 							}
 						}
 						if(sumss >= 2) {
-							JOptionPane.showMessageDialog(null, "ชื่อคะแนนของท่านซ้ำกันครับ/ค่ะ");
+							JOptionPane.showMessageDialog(null, "Name of scores are duplicate");
 							for (int i = 2; i < num ; i++) {
 								fieldName.get(i).setText("");
 							}

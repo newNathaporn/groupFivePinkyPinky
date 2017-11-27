@@ -238,7 +238,7 @@ public class Calculatescore {
 						arrstr[i][j] = sss[j-count] + ",";							
 					}catch (ArrayIndexOutOfBoundsException e) {
 						// TODO: handle exception
-						JOptionPane.showMessageDialog(null,"กรุณากรอกคะแนนให้ครบ");
+						JOptionPane.showMessageDialog(null,"Please fill scores for students be complete");
 						return ;
 					}
 				}else if(ss.length-1 < j){

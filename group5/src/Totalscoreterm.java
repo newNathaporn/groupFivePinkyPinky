@@ -41,6 +41,7 @@ public class Totalscoreterm extends JPanel {
 	private int scoreterm;
 	private int file;
 	private int count = 0;
+	private static int count5 = 0;
 	private Calculatescore cal ;
 	private Totalscoreterm totalscoreterm ;
 	public Totalscoreterm(int scoreterm) {
@@ -121,15 +122,15 @@ public class Totalscoreterm extends JPanel {
 					}
 				}
 				if(textnull>0) {
-					JOptionPane.showMessageDialog(null, "กรุณากรอกข้อมูลให้ครับ หรือ กรุณากด enter");
+					JOptionPane.showMessageDialog(null, "Please fill scores for students be complete or press enter");
 					return;
 				}
 				try {
 					if(Integer.parseInt(studentsabsent.getText())-numstu>0){
-						JOptionPane.showMessageDialog(null, "กรอกคะแนนให้นักศึกษาใหม่ครับ");
+						JOptionPane.showMessageDialog(null, "Please fill scores for students again");
 						return;
 					}else if(Integer.parseInt(studentsabsent.getText())-numstu<0) {
-						JOptionPane.showMessageDialog(null, "กรอกคะแนนให้นักศึกษาใหม่ครับ");
+						JOptionPane.showMessageDialog(null, "Please fill scores for students again");
 						return;
 					}
 				} catch (NumberFormatException e) {
@@ -240,7 +241,6 @@ public class Totalscoreterm extends JPanel {
 		textsum.clear();
 		boolean value = false;
 		int count = 0;
-		int count5 = 0;
 		File f = new File("Datascore" + login.getSubject()+ ".csv");
 		if(!f.exists()) {
 			try {
@@ -343,6 +343,10 @@ public class Totalscoreterm extends JPanel {
 			e.printStackTrace();
 		}
 		return valuee;
+	}
+	
+	public static int getCount5() {
+		return count5;
 	}
 	
 	public static boolean getResult() {

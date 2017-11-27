@@ -43,23 +43,33 @@ public class ShowGrades extends JFrame{
 			e1.printStackTrace();
 		}
 		if(index > 0) index+=2;
-		System.out.println(index);
+
 		String s = "";
 		ArrayList<String> textall = new ArrayList<>();
 		for (int i = 0; i < text.size() ; i++) {
 			String ss[] = text.get(i).split(",");
 			for (int j = 0; j < ss.length; j++) {
 				if(j == 0) {
-					s+= ss[j] + "  " ;						
+					if(j == 0 && i == 0) {
+						s+= ss[j] + " ";
+					}else {						
+						s+= ss[j] + "\t     " ;	
+					}
+					
 				}else if(index+3 == j) {
-					s+= ss[j] + "  " ;					
+					if(i == 0) {
+						s+= ss[j] + "  " ;
+					}else {
+						s+= ss[j] + "\t" ;							
+					}
+		
 				}else if(index+4 == j) {
 					s+= ss[j] ;										
 				}
 			}
-			/*if(i == 0) {
-				s+= "55";
-			}*/
+			if(i == 0) {
+				s+= "Raw Score   Net Score";
+			}
 			textall.add(s);
 			s = "";
 		}

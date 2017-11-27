@@ -19,9 +19,12 @@ import javax.mail.internet.MimeMultipart;
 
 
 public class Sendemail {
+	private String textTest = "";
 	public Sendemail(String text,String email,String subject) {
 		// TODO Auto-generated constructor stub
-	       final String username = "cs284.ttest@gmail.com";
+			textTest = text;
+			
+	       	final String username = "cs284.ttest@gmail.com";
 	        final String password = "cs284123";
 
 	        Properties props = new Properties();
@@ -84,7 +87,7 @@ public class Sendemail {
 	            Multipart multipart = new MimeMultipart();
 	            multipart.addBodyPart(messageBodyPart);
 	            messageBodyPart = new MimeBodyPart();
-	            DataSource source = new FileDataSource("C:\\Users\\Moss\\git\\groupFivePinkyPinky\\group5\\Datascore.csv");
+	            DataSource source = new FileDataSource("C:\\Users\\Moss\\git\\groupFivePinkyPinky\\group5\\Grade"+Login.getSubject()+".csv");
 	            messageBodyPart.setDataHandler(new DataHandler(source));
 	            messageBodyPart.setFileName("Datascore.csv");
 	            multipart.addBodyPart(messageBodyPart);
@@ -98,8 +101,10 @@ public class Sendemail {
 	            throw new RuntimeException(e);
 	        }
 	}
-	public static void main(String[] args) {
-		Sendemail s = new Sendemail("CS284  INTRODUCTION TO SOFTWARE ENGINEERING       Grade :   A","new_ziizyy@hotmail.co.th", "cs284");
+	
+	public String getTexttest() {
+		return textTest;
 	}
+	
 
 }
