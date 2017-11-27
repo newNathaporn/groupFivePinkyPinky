@@ -41,7 +41,7 @@ public class TotalscoretermFrame extends JFrame{
 					Grade g = new Grade();
 					setVisible(false);
 				}else {
-					JOptionPane.showMessageDialog(null, "กรุณากรอกให้ครบทั้งหมด แล้วกด save ที่ Final ก่อน");
+					JOptionPane.showMessageDialog(null, "Please fill scores for students be complete then save at Final before");
 				}
 			}
 		});

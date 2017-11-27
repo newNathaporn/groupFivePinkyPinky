@@ -56,7 +56,7 @@ public class Grade extends JFrame{
 				// TODO Auto-generated method stub
 				Sendemail s = new Sendemail(textmail[0]);				
 				for (int i = 0; i < total.getCount5()-1 ; i++) {
-					if(count == 4) count = 0;
+					if(count == 5) count = 0;
 					Sendemail ss = new Sendemail(text.get(i),textmail[count],login.getSubject());
 					count++;
 				}
@@ -111,9 +111,6 @@ public class Grade extends JFrame{
 			ss = "";
 		}
 		
-		for (int i = 0; i < text.size() ; i++) {
-			System.out.println(text.get(i));
-		}
 	}
 	public static void main(String[] args) {
 		new Grade();
