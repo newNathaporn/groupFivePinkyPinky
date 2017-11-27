@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 public class Calculatescore {
 	private static ArrayList<String> text = new ArrayList<>();
 	private static Login login;
@@ -19,7 +22,7 @@ public class Calculatescore {
 	private static String[] texts;
 	private static String filestring;
 	
-	public static Double[] calculate(String stringfile, int index , String[] textall){
+	public static Double[] calculate(String stringfile, int index , String[] textall,String textsubject){
 		
 		filestring = stringfile;
 		File file = new File(stringfile+".csv");
@@ -41,7 +44,7 @@ public class Calculatescore {
 			fr = new FileReader(new File("Datastandard.csv"));
 			BufferedReader reader = new BufferedReader(fr);
 			String s = reader.readLine();
-			String texttrue = login.getSubject() + ",true";
+			String texttrue = textsubject + ",true";
 			String text = "";
 			while (s != null) {
 				if(s.equals(texttrue)) {
@@ -69,7 +72,11 @@ public class Calculatescore {
 			String[] ss = textall[i].split(",");
 			for (int j = 0; j < ss.length; j++) {
 				if(j > 2) {
-					score[i] = (Double.parseDouble(ss[index+3])*standrad.get(index))/100;					
+					if(ss[index+3].equals("-")) {
+						score[i] = (0*standrad.get(index))/100;	
+					}else {			
+						score[i] = (Double.parseDouble(ss[index+3])*standrad.get(index))/100;					
+					}
 				}
 			}
 		}
@@ -120,7 +127,11 @@ public class Calculatescore {
 			String[] ss = text1.get(i).split (",");
 			for (int j = 0; j < ss.length; j++) {
 				if(j > 2 &&  j % 2 == 0) {
-					scoresum += Double.parseDouble(ss[j]);					
+					if(ss[j].equals("")) {
+						scoresum += 0.0;
+					}else {						
+						scoresum += Double.parseDouble(ss[j]);					
+					}
 				}else if(j == 0){
 					arrgrade[i] = ss[j];
 				}
@@ -223,7 +234,13 @@ public class Calculatescore {
 				if(count+count+4 == j) {
 					arrstr[i][j] = score[i] + ","; 
 				}else if(count+count+3 == j){
-					arrstr[i][j] = sss[j-count] + ",";	
+					try {
+						arrstr[i][j] = sss[j-count] + ",";							
+					}catch (ArrayIndexOutOfBoundsException e) {
+						// TODO: handle exception
+						JOptionPane.showMessageDialog(null,"กรุณากรอกคะแนนให้ครบ");
+						return ;
+					}
 				}else if(ss.length-1 < j){
 					arrstr[i][j] =  ",";	
 				}else {
@@ -243,7 +260,6 @@ public class Calculatescore {
 			arrst = "";
 		}
 		
-		
 		try {
 			FileWriter fw = new FileWriter(new File(ss));
 			PrintWriter writer = new PrintWriter(fw);
@@ -258,5 +274,4 @@ public class Calculatescore {
 			e.printStackTrace();
 		}
 	}
-	
 }

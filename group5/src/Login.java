@@ -43,7 +43,6 @@ public class Login extends JFrame {
 	private Points point;
 	private TotalscoretermFrame f4;
 	private static String valuename = "";
-	
 	public Login() {
 		// TODO Auto-generated constructor stub
 		JPanel p = new JPanel();
@@ -53,7 +52,7 @@ public class Login extends JFrame {
 		JPanel pall = new JPanel();
 
 		textPassword = new JPasswordField(10);
-		id = new JTextField(10);		
+		id = new JTextField(10);	
 		readfile();
 		id.addActionListener(new ActionListener() {
 			
@@ -62,6 +61,8 @@ public class Login extends JFrame {
 				// TODO Auto-generated method stub
 				if(!id.getText().equals("") || !textPassword.getText().equals("")) {
 					valueIdandPassword();
+					File f = new File("Datascore.csv");
+					if(!f.exists())
 					readTextFile();
 					inputValue();
 				}
@@ -74,6 +75,8 @@ public class Login extends JFrame {
 				// TODO Auto-generated method stub
 				if(!id.getText().equals("") || !textPassword.getText().equals("")) {
 					valueIdandPassword();
+					File f = new File("Datascore" + subject + ".csv");
+					if(!f.exists())
 					readTextFile();
 					inputValue();
 				}
@@ -87,6 +90,8 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				valueIdandPassword();
+				File f = new File("Datascore" + subject + ".csv");
+				if(!f.exists())
 				readTextFile();
 				inputValue();
 			}
@@ -122,7 +127,6 @@ public class Login extends JFrame {
 	}
 
 	public static String getSubject() {
-		
 		return subject;
 	}
 
@@ -143,12 +147,13 @@ public class Login extends JFrame {
 			// TODO Auto-generated catch block
 			System.out.println(e1.getMessage());
 		}
-		user = new String[text.size()][3];
+		user = new String[text.size()][4];
 		for (int i = 0; i < text.size(); i++) {
 			String[] t = text.get(i).split(",");
 			user[i][0] = t[0];
 			user[i][1] = t[1];
 			user[i][2] = t[2];
+			user[i][3] = t[3];
 		}
 	}
 	
@@ -167,6 +172,7 @@ public class Login extends JFrame {
 			if (username && password) {
 				subject = user[i][0];
 				value = true;
+				valuename = user[i][3];
 				break;
 			}
 			username = false;
@@ -181,9 +187,11 @@ public class Login extends JFrame {
 			if (point.getcheck()) {
 				f4 = new TotalscoretermFrame();
 				f4.setVisible(true);
+				setVisible(false);
 			} else {
 				point = new Points();
 				point.setVisible(true);
+				setVisible(false);
 			}
 		}else {
 			JOptionPane.showMessageDialog(null, "INPUT ID & PASSWORD AGAIN");
@@ -223,7 +231,7 @@ public class Login extends JFrame {
 		}
 		
 		try {
-			FileWriter fw = new FileWriter(new File("Datascore.csv"));
+			FileWriter fw = new FileWriter(new File("Datascore" + subject + ".csv"));
 			PrintWriter writer = new PrintWriter(fw);
 				writer.println(getSubject());			
 			for (int i = 0; i < t.size(); i++) {

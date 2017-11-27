@@ -31,6 +31,8 @@ public class Totalscoreterm extends JPanel {
 	private JTextField studentsabsent;
 	private JButton save;
 	private JButton result;
+	private JButton showmassage;
+	private static boolean resultnext = false;
 	private DefaultTableModel tableModel;
 	private Login login;
 	private Points point;
@@ -40,8 +42,8 @@ public class Totalscoreterm extends JPanel {
 	private int file;
 	private int count = 0;
 	private Calculatescore cal ;
+	private Totalscoreterm totalscoreterm ;
 	public Totalscoreterm(int scoreterm) {
-		// TODO Auto-generated constructor stub
 		this.scoreterm = scoreterm;
 		JPanel p = new JPanel();
 		JPanel p1 = new JPanel();
@@ -58,6 +60,7 @@ public class Totalscoreterm extends JPanel {
 		
 		save = new JButton("SAVE");
 		result = new JButton("RESULT");
+		showmassage = new JButton("SHOWSCORE");
 		tableModel = new DefaultTableModel();
 		tableModel.addColumn("Code");
 		tableModel.addColumn("Score");
@@ -69,9 +72,8 @@ public class Totalscoreterm extends JPanel {
 		
 		if(scoreterm == 1) {
 			if(!value()) {
-				
+				save.setEnabled(false);
 			}
-				//save.setEnabled(false);
 		}
 		
 		String text[] = new String[2];
@@ -85,26 +87,42 @@ public class Totalscoreterm extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(value()) 
 					save.setEnabled(true);
 				}
 		});
+		
+		showmassage.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ShowGrades s = new ShowGrades(scoreterm);
+			}
+		});
+		
 		save.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				textall = sizeStudent();
 				int num = 0;
 				String text = "";		
 				int numstu = 0;
+				int textnull = 0;
 				num = 3 + scoreterm;
 				for (int i = 0; i < textall.length; i++) {
 					text = tableModel.getValueAt(i, 1).toString();
-					if(text.equals("0") || text.equals("")) {
+					if(text.equals("-")) {
 						numstu++;
 					}
+					if(text.equals("")) {
+						textnull++;
+					}
+				}
+				if(textnull>0) {
+					JOptionPane.showMessageDialog(null, "กรุณากรอกข้อมูลให้ครับ หรือ กรุณากด enter");
+					return;
 				}
 				try {
 					if(Integer.parseInt(studentsabsent.getText())-numstu>0){
@@ -115,7 +133,6 @@ public class Totalscoreterm extends JPanel {
 						return;
 					}
 				} catch (NumberFormatException e) {
-					// TODO: handle exception
 					JOptionPane.showMessageDialog(null, "กรอกจำนวนคนขาดสอบด้วยครับ");
 					return;
 				}
@@ -141,7 +158,7 @@ public class Totalscoreterm extends JPanel {
 				
 				boolean valuee = false;
 				try {
-					FileWriter fw = new FileWriter(new File("Datascore.csv"));
+					FileWriter fw = new FileWriter(new File("Datascore" + login.getSubject()+ ".csv"));
 					PrintWriter writer = new PrintWriter(fw);
 					for (int i = 0; i < textsum.size(); i++) {
 						if (i == file) {
@@ -163,9 +180,13 @@ public class Totalscoreterm extends JPanel {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				cal.calculate(login.getSubject(), scoreterm, t);
+				cal.calculate(login.getSubject(), scoreterm, t,login.getSubject());
 				cal.writeFile();
 				cal.gradeFile();
+				if(scoreterm == 1) {
+					resultnext = true;
+				}
+				
 			}
 		});
 
@@ -186,24 +207,26 @@ public class Totalscoreterm extends JPanel {
 					String dataUpdated = tableModel.getValueAt(row, column).toString();
 					
 					try {
-						data = Integer.valueOf(dataUpdated);
+						if(!dataUpdated.equals("-")) {							
+							data = Integer.valueOf(dataUpdated);
+						}
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						if(column == 1) {
 							tableModel.setValueAt(0, row, column);
-							JOptionPane.showMessageDialog(null, "Input Number");
+							JOptionPane.showMessageDialog(null, "กรุณากรอกคะแนนใหม่");
 							return;
 						}
 					}
 				}
-				
 			}
 		});
-
+	
 		pall.setLayout(new BorderLayout());
 		pall.add(p, BorderLayout.NORTH);
 		pall.add(tableScroll, BorderLayout.CENTER);
 		p2.add(save);
+		p2.add(showmassage);
 		if(scoreterm == 1) {
 			p2.add(result);
 		}
@@ -218,7 +241,7 @@ public class Totalscoreterm extends JPanel {
 		boolean value = false;
 		int count = 0;
 		int count5 = 0;
-		File f = new File("Datascore.csv");
+		File f = new File("Datascore" + login.getSubject()+ ".csv");
 		if(!f.exists()) {
 			try {
 				f.createNewFile();
@@ -278,11 +301,11 @@ public class Totalscoreterm extends JPanel {
 	}
 	
 	public boolean value() {
-		point.getcheck();
-		
+
 		int index = 0;
 		boolean value = false ;
-		try (FileReader fr = new FileReader((new File("Datascore.csv")));
+		boolean valuee = false ;
+		try (FileReader fr = new FileReader((new File("Datascore" + login.getSubject()+ ".csv")));
 				BufferedReader reader = new BufferedReader(fr);){
 			String s = reader.readLine();
 			String[] ss = new String[point.stringName().size() + 3]; 
@@ -310,7 +333,7 @@ public class Totalscoreterm extends JPanel {
 				s = reader.readLine();
 			}
 			if(index == 0) {
-				value = true;
+				valuee = true;
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -319,6 +342,10 @@ public class Totalscoreterm extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return value;
+		return valuee;
+	}
+	
+	public static boolean getResult() {
+		return resultnext ;
 	}
 }

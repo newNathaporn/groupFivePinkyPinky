@@ -353,6 +353,7 @@ public class Points extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	
 		return checkinputscore;
 	}
 
